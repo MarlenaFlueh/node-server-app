@@ -3,33 +3,28 @@ const hbs = require('hbs');
 
 const app = express();
 
+hbs.registerPartials(__dirname + '/views/partials')
 app.set('view engine', 'hbs');
 app.use(express.static(__dirname + '/public'));
 
-app.get('/',(req, res) => {
- //res.send('<h1>Hello express!<h1>');
- res.send({
-   name: 'Marlena',
-   likes: [
-     'Biking',
-     'Pianos',
-     'Motocross'
-   ]
- });
+hbs.registerHelper('getCurrentYear', () => {
+  return new Date().getFullYear()
 });
 
-app.get('/about', (req, res) => {
-  res.render('about.hbs', {
-    pageTitle: 'about Page',
-    currentYear: new Date().getFullYear()
-  });
+hbs.registerHelper('screamIt', (text) => {
+  return text.toUpperCase();
 });
 
 app.get('/', (req, res) => {
   res.render('home.hbs', {
     pageTitle: 'Homepage',
-    currentYear: new Date().getFullYear(),
     welcomeMessage: 'hello guys'
+  });
+});
+
+app.get('/about', (req, res) => {
+  res.render('about.hbs', {
+    pageTitle: 'About Page',
   });
 });
 
